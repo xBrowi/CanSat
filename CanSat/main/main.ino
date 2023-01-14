@@ -12,12 +12,15 @@ void setup() {
   Serial.begin(9600);
   bmpObj.begin_I2C();
   delay(1000);
-  Serial.println("test");
 }
 
 void loop() {
-  Serial.println(millis());
-  //printTemp();
+  Serial.print("akat ");
+  Serial.print(millis());
+  Serial.print(" ");
+  printTemp();
+  Serial.print(" ");
   printbmp();
+  Serial.println();
 delay(100);
 }

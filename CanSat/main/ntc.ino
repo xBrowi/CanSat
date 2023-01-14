@@ -1,3 +1,3 @@
 void printTemp() {
-Serial.println(analogRead(A0));
+Serial.print(analogRead(A0));
 }
