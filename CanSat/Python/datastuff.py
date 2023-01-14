@@ -1,5 +1,2 @@
-
-print("can you feel my heart?")
-
-print("*bewn**bewn**bewn**bewn*")
-
+f = open("demofile.txt", "r")
+print(f.read(5)) 
