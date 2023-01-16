@@ -1,7 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy.optimize import curve_fit
 
-with open('D:\data.txt') as f:
+with open('D:\\varmdata.txt') as f:
     lines = f.readlines()
 
 time=[]
@@ -11,23 +12,32 @@ bmpTryk=[]
 bmpAlt=[]
 
 for i in range(550, len(lines), 1):
-    time.append(int(lines[i].split()[1])-55000)
-    ntcTempRaw.append(int(lines[i].split()[2]))
-    """bmpTemp.append(float(lines[i].split()[3]))
-    bmpTryk.append(float(lines[i].split()[4]))
-    bmpAlt.append(float(lines[i].split()[5]))"""
+    x = lines[i].split()
+    time.append(int(x[1])-55000)
+    ntcTempRaw.append(int(x[2]))
+    """bmpTemp.append(float(x[3]))
+    bmpTryk.append(float(x[4]))
+    bmpAlt.append(float(x[5]))"""
 
 plt.plot(time, ntcTempRaw)
 plt.show()
-from scipy.optimize import curve_fit
 
 
-def fit_func(x, k):
-    return (ntcTempRaw[0]-490)*pow(np.e, -k*x)+490
+def func(x, a, b, c):
+    return a * np.exp(-b * x) + c
 
-params = curve_fit(fit_func, time, ntcTempRaw)
+x = np.array(time)
+#y = func(x, 510, 0.00005, 490)
+y=np.array(ntcTempRaw)
+yn = y
 
-[k] = params[0]
+popt, pcov = curve_fit(func, x, yn, p0=[510, 0.00005, 490])
 
+plt.figure()
+plt.plot(x, yn, 'ko', label="Original Noised Data")
+plt.plot(x, func(x, *popt), 'r-', label="Fitted Curve")
+plt.legend()
+plt.show()
 
-print(k)
+print(popt)
+print(pcov)
