@@ -19,8 +19,8 @@ void loop() {
   Serial.print(millis());
   Serial.print(" ");
   printTemp();
-  //Serial.print(" ");
-  //printbmp();
+  Serial.print(" ");
+  printbmp();
   Serial.println();
 delay(100);
 }

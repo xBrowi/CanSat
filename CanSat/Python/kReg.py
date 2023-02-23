@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import curve_fit
 
-with open('D:\\varmdata.txt') as f:
+with open('D:\\varmeluft3.txt') as f:
     lines = f.readlines()
 
 time=[]
@@ -11,9 +11,9 @@ bmpTemp=[]
 bmpTryk=[]
 bmpAlt=[]
 
-for i in range(550, len(lines), 1):
+for i in range(88, len(lines), 1):
     x = lines[i].split()
-    time.append(int(x[1])-55000)
+    time.append(int(x[1])-8800)
     ntcTempRaw.append(int(x[2]))
     """bmpTemp.append(float(x[3]))
     bmpTryk.append(float(x[4]))
