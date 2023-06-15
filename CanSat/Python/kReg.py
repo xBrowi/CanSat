@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import curve_fit
 
-with open('D:\\varmeluft3.txt') as f:
+with open("C:/Users/augus/Desktop/CanSat/CanSat/testdata.txt") as f:
     lines = f.readlines()
 
 time=[]
@@ -11,16 +11,16 @@ bmpTemp=[]
 bmpTryk=[]
 bmpAlt=[]
 
-for i in range(88, len(lines), 1):
+for i in range(0, len(lines), 1):
     x = lines[i].split()
-    time.append(int(x[1])-8800)
+    time.append(int(x[1])-0000)
     ntcTempRaw.append(int(x[2]))
     """bmpTemp.append(float(x[3]))
     bmpTryk.append(float(x[4]))
     bmpAlt.append(float(x[5]))"""
 
 def ItoT(i):
-    R = 10000 / (i / (1024 - i))
+    R = 10000 / ((i*6.144/5) / (32767 - (i*6.144/5)))
     A = 0.003354016
     B = 0.000256985
     C = 0.000002620131

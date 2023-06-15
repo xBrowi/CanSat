@@ -1,7 +1,7 @@
 
 void printgps() {
-while (gpsss.available() > 0)
-    if (gps.encode(gpsss.read()))
+while (Serial1.available() > 0)
+    if (gps.encode(Serial1.read()))
       displayInfo();
 }
 

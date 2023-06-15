@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-with open('C:\cansat\data.txt') as f:
+with open("C:/Users/augus/Desktop/CanSat/CanSat/testdata.txt") as f:
     lines = f.readlines()
 
 time=[]

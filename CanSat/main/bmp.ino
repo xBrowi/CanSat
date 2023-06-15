@@ -1,9 +1,12 @@
 
 
 void printbmp () {
-Serial.print(bmpObj.temperature);
-Serial.print(" ");
-Serial.print(bmpObj.pressure / 100.0);
-Serial.print(" ");
-Serial.print(bmpObj.readAltitude(SEALEVELPRESSURE_HPA));
+Serial.print(bme.temperature);
+Serial.print(" T ");
+Serial.print(bme.pressure / 100.0);
+Serial.print(" P ");
+Serial.print(bme.humidity);
+Serial.print(" H ");
+Serial.print(bme.gas_resistance / 1000.0);
+Serial.print(" R ");
 }

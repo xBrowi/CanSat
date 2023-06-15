@@ -1,3 +1,4 @@
 void printTemp() {
-Serial.print(analogRead(A0));
+  adc0 = ads.readADC_SingleEnded(0);
+  Serial.print(adc0);
 }
