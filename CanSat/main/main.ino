@@ -51,11 +51,22 @@ ICM_20948_I2C myICM; // Otherwise create an ICM_20948_I2C object
 
 
 
-
+double q1=0;
+double q2=0;
+double q3=0;
+float acc_x=0;
+float acc_y=0;
+float acc_z=0;
+double q1a=0;
+double q2a=0;
+double q3a=0;
+float acc_xa=0;
+float acc_ya=0;
+float acc_za=0;
 
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   Serial1.begin(GPSBaud);
   Wire.begin();
   lightMeter.begin();
@@ -76,6 +87,14 @@ void setup() {
 
 void loop() {
   
+  q1a=q1;
+  q2a=q2;
+  q3a=q3;
+  acc_xa=acc_x;
+  acc_ya=acc_y;
+  acc_za=acc_z;
+
+  
   bme.performReading();
   Serial.print("amogus ");
   Serial.print(millis());
@@ -84,11 +103,35 @@ void loop() {
   Serial.print(" ");
   printbmp();
   Serial.print(" ");
-  printLys();
-  Serial.print(" L ");
+  //printLys();
+  //Serial.print(" L ");
   printIMU();
+
+  if (q1!=q1a or q2!=q2a or q3!=q3a) {
+  
+  Serial.print(q1,3);
   Serial.print(" ");
+  Serial.print(q2,3);
+  Serial.print(" ");
+  Serial.print(q3,3);
+  Serial.print(" ");
+  } else {
+    Serial.print("a a a ");
+  }
+
+
+  if (acc_x!=acc_xa or acc_y!=acc_ya or acc_z!=acc_za) {
+  
+  Serial.print(acc_x,1);
+  Serial.print(" ");
+  Serial.print(acc_y,1);
+  Serial.print(" ");
+  Serial.print(acc_z,1);
+  Serial.print(" ");
+  } else {
+    Serial.print("a a a ");
+  }
+  
   //printgps();
   Serial.println();
-
 }
