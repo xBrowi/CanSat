@@ -4,7 +4,7 @@ from scipy.optimize import curve_fit
 from scipy.signal import savgol_filter
 from scipy.stats import linregress
 
-with open("C:/Users/augus/Desktop/CanSat/CanSat/testdata.txt") as f:
+with open("C:/Users/augus/Desktop/CanSat/CanSat/sortntcK.txt") as f:
     lines = f.readlines()
 
 k=0.16
@@ -18,22 +18,23 @@ bmpTryk=[]
 bmpAlt=[]
 lys=[]
 
-for i in range(700, len(lines)-40, 1):
+#husk at fixe index
+
+for i in range(6100, len(lines)-10000, 1):
     x = lines[i].split()
-    time.append(int(x[1])-70000)
-    ntcTempRaw.append(int(x[2]))
-    bmpTemp.append(float(x[3]))
+    time.append(int(x[0])-0)
+    ntcTempRaw.append(int(x[1]))
+    #bmpTemp.append(float(x[3]))
     #bmpTryk.append(float(x[4]))
     #bmpAlt.append(float(x[5]))
     #lys.append(float(x[6]))
 
 def ItoT(i):
-    R = 10000 / (i*6.144/5 / (32767 - i*6.144/5))
-    A = 0.003354016
-    B = 0.000256985
-    C = 0.000002620131
-    D = 0.00000006383091
-    return (1 / (A + B * (np.log(R / 10000)) + C * pow(np.log(R / 10000), 2) + D * pow(np.log(R / 10000), 3)))
+    R = 9677 / (i / (32767*4.65/6.144 - i)) # sussy 4.4 V i stedet for 5???
+    A = 0.0033535
+    B = 0.00030189
+    C = 0.0000056906
+    return (1 / (A + B * (np.log(R / 10000)) + C * pow(np.log(R / 10000), 2)))
 
 def PtoH(P):
     A=np.float64(102.3)
@@ -54,12 +55,12 @@ RealTimeTemp = RealTime+w/10
 RealTemp1=[]
 RealTemp2=[]
 ntcTempSlope=[]
-RegTemp=[]
+RegTemp=np.array([])
 
 for i in range(0, len(ntcTemp)-w,1) :
     slope=linregress(RealTime[i:i+w],ntcTempSavgol[i:i+w])[0]
     ntcTempSlope.append(slope)
-    RegTemp.append(ntcTemp[i+round(w/2)])
+    RegTemp=np.append(RegTemp,ntcTemp[i+round(w/2)])
 
 #for i in range(0, len(ntcTemp)-w,1) :
     #slope=linregress(RealTime[i:i+w],ntcTemp[i:i+w])[0]
@@ -128,7 +129,7 @@ plt.show()'''
 
 
 
-
+'''
 def func(T, k, c):
     return -k*(T-21.78156885-273.15)-c*((T)**4-(21.78156885+273.15)**4)
 
@@ -147,3 +148,12 @@ plt.show()
 print(popt)
 
 print(RegTemp[100])
+'''
+res=linregress(RegTemp,ntcTempSlope)
+
+plt.scatter(RegTemp[o:],ntcTempSlope[o:],label="Måledata")
+plt.ylabel('dT/dt [K/s]')
+plt.xlabel('Temp [K]')
+plt.plot(RegTemp, res.intercept+res.slope*RegTemp, color='red')
+plt.show()
+print(res.slope)

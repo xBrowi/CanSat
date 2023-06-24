@@ -9,11 +9,6 @@ void IMUsetup()
   while (SERIAL_PORT.available()) // Make sure the serial RX buffer is empty
     SERIAL_PORT.read();
 
-  SERIAL_PORT.println(F("Press any key to continue..."));
-
-  while (!SERIAL_PORT.available()) // Wait for the user to press a key (send any serial character)
-    ;
-
 #ifdef USE_SPI
   SPI_PORT.begin();
 #else
@@ -147,67 +142,33 @@ void printIMU()
       //SERIAL_PORT.printf("Quat6 data is: Q1:%ld Q2:%ld Q3:%ld\r\n", data.Quat6.Data.Q1, data.Quat6.Data.Q2, data.Quat6.Data.Q3);
 
       // Scale to +/- 1
-      double q1 = ((double)data.Quat6.Data.Q1) / 1073741824.0; // Convert to double. Divide by 2^30
-      double q2 = ((double)data.Quat6.Data.Q2) / 1073741824.0; // Convert to double. Divide by 2^30
-      double q3 = ((double)data.Quat6.Data.Q3) / 1073741824.0; // Convert to double. Divide by 2^30
-
+      q1 = ((double)data.Quat6.Data.Q1) / 1073741824.0; // Convert to double. Divide by 2^30
+      q2 = ((double)data.Quat6.Data.Q2) / 1073741824.0; // Convert to double. Divide by 2^30
+      q3 = ((double)data.Quat6.Data.Q3) / 1073741824.0; // Convert to double. Divide by 2^30
+/*
       SERIAL_PORT.print(F("Q1:"));
       SERIAL_PORT.print(q1, 3);
       SERIAL_PORT.print(F(" Q2:"));
       SERIAL_PORT.print(q2, 3);
       SERIAL_PORT.print(F(" Q3:"));
       SERIAL_PORT.print(q3, 3);
-      SERIAL_PORT.print(" ");
+      SERIAL_PORT.print(" ");*/
     }
 
     if ((data.header & DMP_header_bitmap_Accel) > 0) // Check for Accel
     {
-      float acc_x = (float)data.Raw_Accel.Data.X; // Extract the raw accelerometer data
-      float acc_y = (float)data.Raw_Accel.Data.Y;
-      float acc_z = (float)data.Raw_Accel.Data.Z;
+      acc_x = (float)data.Raw_Accel.Data.X; // Extract the raw accelerometer data
+      acc_y = (float)data.Raw_Accel.Data.Y;
+      acc_z = (float)data.Raw_Accel.Data.Z;
 
-      SERIAL_PORT.print(F("Accel: X:"));
+      /*SERIAL_PORT.print(F("Accel: X:"));
       SERIAL_PORT.print(acc_x);
       SERIAL_PORT.print(F(" Y:"));
       SERIAL_PORT.print(acc_y);
       SERIAL_PORT.print(F(" Z:"));
       SERIAL_PORT.print(acc_z);
-      SERIAL_PORT.print(" ");
-    }
-
-    if ((data.header & DMP_header_bitmap_Gyro) > 0) // Check for Gyro
-    {
-      float x = (float)data.Raw_Gyro.Data.X; // Extract the raw gyro data
-      float y = (float)data.Raw_Gyro.Data.Y;
-      float z = (float)data.Raw_Gyro.Data.Z;
-
-      SERIAL_PORT.print(F("Gyro: X:"));
-      SERIAL_PORT.print(x);
-      SERIAL_PORT.print(F(" Y:"));
-      SERIAL_PORT.print(y);
-      SERIAL_PORT.print(F(" Z:"));
-      SERIAL_PORT.print(z);
-      SERIAL_PORT.print(" ");
-    }
-
-    if ((data.header & DMP_header_bitmap_Compass) > 0) // Check for Compass
-    {
-      float x = (float)data.Compass.Data.X; // Extract the compass data
-      float y = (float)data.Compass.Data.Y;
-      float z = (float)data.Compass.Data.Z;
-
-      SERIAL_PORT.print(F("Compass: X:"));
-      SERIAL_PORT.print(x);
-      SERIAL_PORT.print(F(" Y:"));
-      SERIAL_PORT.print(y);
-      SERIAL_PORT.print(F(" Z:"));
-      SERIAL_PORT.print(z);
-      SERIAL_PORT.print(" ");
+      SERIAL_PORT.print(" ");*/
     }
   }
-
-  if (myICM.status != ICM_20948_Stat_FIFOMoreDataAvail) // If more data is available then we should read it right away - and not delay
-  {
-    delay(10);
-  }
+  
 }

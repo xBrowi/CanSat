@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import curve_fit
 
-with open("C:/Users/augus/Desktop/CanSat/CanSat/testdata.txt") as f:
+with open("C:/Users/augus/Desktop/CanSat/CanSat/sortntcK.txt") as f:
     lines = f.readlines()
 
 time=[]
@@ -11,10 +11,10 @@ bmpTemp=[]
 bmpTryk=[]
 bmpAlt=[]
 
-for i in range(0, len(lines), 1):
+for i in range(6100, len(lines)-10000, 1):
     x = lines[i].split()
-    time.append(int(x[1])-0000)
-    ntcTempRaw.append(int(x[2]))
+    time.append(int(x[0])-0000)
+    ntcTempRaw.append(int(x[1]))
     """bmpTemp.append(float(x[3]))
     bmpTryk.append(float(x[4]))
     bmpAlt.append(float(x[5]))"""
@@ -53,3 +53,4 @@ plt.show()
 print(popt)
 print(pcov)
 
+print(ItoT(11610))
