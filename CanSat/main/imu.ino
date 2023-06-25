@@ -1,13 +1,11 @@
 void IMUsetup()
 {
-
-  SERIAL_PORT.begin(9600); // Start the serial console
-  SERIAL_PORT.println(F("ICM-20948 Example"));
+  Serial.println(F("ICM-20948 Example"));
 
   delay(100);
 
-  while (SERIAL_PORT.available()) // Make sure the serial RX buffer is empty
-    SERIAL_PORT.read();
+  while (Serial.available()) // Make sure the serial RX buffer is empty
+    Serial.read();
 
 #ifdef USE_SPI
   SPI_PORT.begin();
@@ -30,11 +28,11 @@ void IMUsetup()
     myICM.begin(WIRE_PORT, AD0_VAL);
 #endif
 
-    SERIAL_PORT.print(F("Initialization of the sensor returned: "));
-    SERIAL_PORT.println(myICM.statusString());
+    Serial.print(F("Initialization of the sensor returned: "));
+    Serial.println(myICM.statusString());
     if (myICM.status != ICM_20948_Stat_Ok)
     {
-      SERIAL_PORT.println(F("Trying again..."));
+      Serial.println(F("Trying again..."));
       delay(500);
     }
     else
@@ -43,7 +41,7 @@ void IMUsetup()
     }
   }
 
-  SERIAL_PORT.println(F("Device connected!"));
+  Serial.println(F("Device connected!"));
 
   bool success = true; // Use success to show if the DMP configuration was successful
 
@@ -102,12 +100,12 @@ void IMUsetup()
   // Check success
   if (success)
   {
-    SERIAL_PORT.println(F("DMP enabled!"));
+    Serial.println(F("DMP enabled!"));
   }
   else
   {
-    SERIAL_PORT.println(F("Enable DMP failed!"));
-    SERIAL_PORT.println(F("Please check that you have uncommented line 29 (#define ICM_20948_USE_DMP) in ICM_20948_C.h..."));
+    Serial.println(F("Enable DMP failed!"));
+    Serial.println(F("Please check that you have uncommented line 29 (#define ICM_20948_USE_DMP) in ICM_20948_C.h..."));
     while (1)
       ; // Do nothing more
   }
@@ -127,11 +125,11 @@ void printIMU()
 
   if ((myICM.status == ICM_20948_Stat_Ok) || (myICM.status == ICM_20948_Stat_FIFOMoreDataAvail)) // Was valid data available?
   {
-    //SERIAL_PORT.print(F("Received data! Header: 0x")); // Print the header in HEX so we can see what data is arriving in the FIFO
-    //if ( data.header < 0x1000) SERIAL_PORT.print( "0" ); // Pad the zeros
-    //if ( data.header < 0x100) SERIAL_PORT.print( "0" );
-    //if ( data.header < 0x10) SERIAL_PORT.print( "0" );
-    //SERIAL_PORT.println( data.header, HEX );
+    //Serial.print(F("Received data! Header: 0x")); // Print the header in HEX so we can see what data is arriving in the FIFO
+    //if ( data.header < 0x1000) Serial.print( "0" ); // Pad the zeros
+    //if ( data.header < 0x100) Serial.print( "0" );
+    //if ( data.header < 0x10) Serial.print( "0" );
+    //Serial.println( data.header, HEX );
 
     if ((data.header & DMP_header_bitmap_Quat6) > 0) // Check for orientation data (Quat9)
     {
@@ -139,20 +137,20 @@ void printIMU()
       // In case of drift, the sum will not add to 1, therefore, quaternion data need to be corrected with right bias values.
       // The quaternion data is scaled by 2^30.
 
-      //SERIAL_PORT.printf("Quat6 data is: Q1:%ld Q2:%ld Q3:%ld\r\n", data.Quat6.Data.Q1, data.Quat6.Data.Q2, data.Quat6.Data.Q3);
+      //Serial.printf("Quat6 data is: Q1:%ld Q2:%ld Q3:%ld\r\n", data.Quat6.Data.Q1, data.Quat6.Data.Q2, data.Quat6.Data.Q3);
 
       // Scale to +/- 1
       q1 = ((double)data.Quat6.Data.Q1) / 1073741824.0; // Convert to double. Divide by 2^30
       q2 = ((double)data.Quat6.Data.Q2) / 1073741824.0; // Convert to double. Divide by 2^30
       q3 = ((double)data.Quat6.Data.Q3) / 1073741824.0; // Convert to double. Divide by 2^30
 /*
-      SERIAL_PORT.print(F("Q1:"));
-      SERIAL_PORT.print(q1, 3);
-      SERIAL_PORT.print(F(" Q2:"));
-      SERIAL_PORT.print(q2, 3);
-      SERIAL_PORT.print(F(" Q3:"));
-      SERIAL_PORT.print(q3, 3);
-      SERIAL_PORT.print(" ");*/
+      Serial.print(F("Q1:"));
+      Serial.print(q1, 3);
+      Serial.print(F(" Q2:"));
+      Serial.print(q2, 3);
+      Serial.print(F(" Q3:"));
+      Serial.print(q3, 3);
+      Serial.print(" ");*/
     }
 
     if ((data.header & DMP_header_bitmap_Accel) > 0) // Check for Accel
@@ -161,13 +159,13 @@ void printIMU()
       acc_y = (float)data.Raw_Accel.Data.Y;
       acc_z = (float)data.Raw_Accel.Data.Z;
 
-      /*SERIAL_PORT.print(F("Accel: X:"));
-      SERIAL_PORT.print(acc_x);
-      SERIAL_PORT.print(F(" Y:"));
-      SERIAL_PORT.print(acc_y);
-      SERIAL_PORT.print(F(" Z:"));
-      SERIAL_PORT.print(acc_z);
-      SERIAL_PORT.print(" ");*/
+      /*Serial.print(F("Accel: X:"));
+      Serial.print(acc_x);
+      Serial.print(F(" Y:"));
+      Serial.print(acc_y);
+      Serial.print(F(" Z:"));
+      Serial.print(acc_z);
+      Serial.print(" ");*/
     }
   }
   

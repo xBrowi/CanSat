@@ -24,6 +24,7 @@ static const uint32_t GPSBaud = 9600;
 Adafruit_BME680 bme;
 float a0;
 int16_t adc0;
+int16_t adc23;
 int UVOUT = A13; //Output from the sensor
 int REF_3V3 = A10; //3.3V power on the Arduino board
 
@@ -66,7 +67,7 @@ float acc_za=0;
 
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
   Serial1.begin(GPSBaud);
   Wire.begin();
   lightMeter.begin();
@@ -83,6 +84,8 @@ void setup() {
   IMUsetup();
   
 
+
+  delay(1000);
 }
 
 void loop() {
@@ -103,8 +106,8 @@ void loop() {
   Serial.print(" ");
   printbmp();
   Serial.print(" ");
-  //printLys();
-  //Serial.print(" L ");
+  printLys();
+  Serial.print(" L ");
   printIMU();
 
   if (q1!=q1a or q2!=q2a or q3!=q3a) {
@@ -132,6 +135,6 @@ void loop() {
     Serial.print("a a a ");
   }
   
-  //printgps();
+  printgps();
   Serial.println();
 }

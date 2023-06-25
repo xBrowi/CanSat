@@ -7,7 +7,7 @@ import math
 from scipy.spatial.transform import Rotation as R
 
 
-with open("C:/Users/augus/Desktop/CanSat/CanSat/GoofyIMU.txt") as f:
+with open("C:/Users/augus/Desktop/CanSat/CanSat/emilrun.txt") as f:
     lines = f.readlines()
 
 k=0.57
@@ -25,11 +25,14 @@ for i in range(0, len(lines)-0, 1):
     x = lines[i].split()
     time=np.append(time, int(x[1]))
     #ntcTempRaw=np.append(ntcTempRaw,int(x[1]))
-    if x[11] != 'no':
-        q1=np.append(q1,float(x[11]))
-        q2=np.append(q2,float(x[12]))
-        q3=np.append(q3,float(x[13]))
-        qtime=np.append(qtime,int(x[1]))
+    if x[9] != 'a':
+        q1=np.append(q1,float(x[9]))
+        q2=np.append(q2,float(x[10]))
+        q3=np.append(q3,float(x[11]))
+    else:
+        q1=np.append(q1,q1[i-1])
+        q2=np.append(q2,q2[i-1])
+        q3=np.append(q3,q3[i-1])
 
 def ItoT(i):
     R = 9677 / (i / (32767*4.65/6.144 - i)) # sussy 4.65 V i stedet for 5???
@@ -86,9 +89,9 @@ for i in range(0,len(q1)):
     RotMatrix.append(r.as_matrix())
 
 
-plt.plot(qtime, roll)
-plt.plot(qtime, pitch)
-plt.plot(qtime, yaw)
+plt.plot(time, roll)
+plt.plot(time, pitch)
+plt.plot(time, yaw, color='green')
 plt.show()
 
 r=R.from_quat([q1[0],q2[0],q3[0],q0[0]])
