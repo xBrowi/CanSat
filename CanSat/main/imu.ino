@@ -111,7 +111,7 @@ void IMUsetup()
   }
 }
 
-void printIMU()
+void updateIMU()
 {
   // Read any DMP data waiting in the FIFO
   // Note:

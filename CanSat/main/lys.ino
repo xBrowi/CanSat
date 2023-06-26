@@ -1,18 +1,18 @@
 
 void printLys(){
-  //int uvLevel = averageAnalogRead(UVOUT);
-  //int refLevel = averageAnalogRead(REF_3V3);
+  int uvLevel = averageAnalogRead(UVOUT);
+  int refLevel = averageAnalogRead(REF_3V3);
   
-  //float outputVoltage = 3.3 / refLevel * uvLevel;
+  float outputVoltage = 3.3 / refLevel * uvLevel;
 
-  //float uvIntensity = mapfloat(outputVoltage, 0.99, 2.8, 0.0, 15.0); //Convert the voltage to a UV intensity level
+  float uvIntensity = mapfloat(outputVoltage, 0.99, 2.8, 0.0, 15.0); //Convert the voltage to a UV intensity level
   
   float lux = lightMeter.readLightLevel();
   Serial.print(lux);
   
   Serial.print(" ");
   
-  //Serial.print(uvIntensity);
+  Serial.print(uvIntensity);
  
 }
 

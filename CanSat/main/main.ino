@@ -22,11 +22,10 @@ static const uint32_t GPSBaud = 9600;
 #define AD0_VAL 1
 
 Adafruit_BME680 bme;
-float a0;
 int16_t adc0;
 int16_t adc23;
-int UVOUT = A13; //Output from the sensor
-int REF_3V3 = A10; //3.3V power on the Arduino board
+int UVOUT = A2; //Output from the sensor
+int REF_3V3 = A0; //3.3V power on the Arduino board
 
 
 
@@ -99,16 +98,18 @@ void loop() {
 
   
   bme.performReading();
-  Serial.print("amogus ");
+  Serial.print("ak ");
   Serial.print(millis());
   Serial.print(" ");
   printTemp();
   Serial.print(" ");
-  printbmp();
+  printbme();
   Serial.print(" ");
   printLys();
-  Serial.print(" L ");
-  printIMU();
+  Serial.print(" ");
+  Serial.print(analogRead(A1)); //spænding på batteri
+  Serial.print(" ");
+  updateIMU();
 
   if (q1!=q1a or q2!=q2a or q3!=q3a) {
   
@@ -119,7 +120,7 @@ void loop() {
   Serial.print(q3,3);
   Serial.print(" ");
   } else {
-    Serial.print("a a a ");
+    Serial.print("a ");
   }
 
 
@@ -132,8 +133,10 @@ void loop() {
   Serial.print(acc_z,1);
   Serial.print(" ");
   } else {
-    Serial.print("a a a ");
+    Serial.print("b ");
   }
+
+  Serial.print("c ");
   
   printgps();
   Serial.println();

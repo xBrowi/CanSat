@@ -94,9 +94,9 @@ plt.plot(time, pitch)
 plt.plot(time, yaw, color='green')
 plt.show()
 
-r=R.from_quat([q1[0],q2[0],q3[0],q0[0]])
+r=R.from_quat([q1[10],q2[10],q3[10],q0[10]])
 print(r.as_matrix())
-print(RotMatrix[0])
+print(RotMatrix[10])
 '''
 plt.plot(time,ntcTempRaw)
 plt.show()
